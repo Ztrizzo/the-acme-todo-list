@@ -5,6 +5,7 @@ const CREATE_TODO = 'CREATE_TODO';
 const DELETE_TODO = 'DELETE_TODO';
 const UPDATE_TODO = 'UPDATE_TODO';
 const SET_TODOS = 'SET_TODOS';
+const ERROR = 'ERROR';
 
 // action creators
 const _createTodo = (todo) => {
@@ -39,18 +40,51 @@ const _setTodos = (todos) => {
 
 export const createTodo = (todo, history) => {
   return async (dispatch) => {
-    const { data: created } = await axios.post('/api/todos', todo);
-    dispatch(_createTodo(created));
-    history.push('/');
+    try{
+      const { data: created } = await axios.post('/api/todos', todo);
+      dispatch(_createTodo(created));
+      history.push('/');
+    }
+    catch(ex){
+      dispatch({
+        type: ERROR,
+        message: ex.response.data
+      })
+    }
+  };
+};
+
+export const createTodoSingleUser = (todo) => {
+  return async (dispatch) => {
+    try{
+      console.log(todo)
+      const { data: created } = await axios.post('/api/todos', todo);
+      dispatch(_createTodo(created));
+    }
+    catch(ex){
+      dispatch({
+        type: ERROR,
+        message: ex.response.data
+      })
+    }
   };
 };
 
 export const updateTodo = (todo, history) => {
   return async (dispatch) => {
-    const response = await axios.put(`/api/todos/${todo.id}`, todo);
-    dispatch(_updateTodo(response.data));
-    console.log(response.data);
-    history.push('/');
+    try{
+      const response = await axios.put(`/api/todos/${todo.id}`, todo);
+      dispatch(_updateTodo(response.data));
+      console.log(response.data);
+      history.push('/');
+    }
+    catch(ex){
+      dispatch({
+        type: ERROR,
+        message: ex.response.data
+      })
+    }
+
   };
 };
 

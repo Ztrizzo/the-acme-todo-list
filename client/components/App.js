@@ -5,6 +5,7 @@ import CreateTodo from './CreateTodo';
 import EditTodo from './EditTodo';
 import { connect } from 'react-redux';
 import { fetchTodos, fetchUsers } from '../store';
+import Error from './Error';
 
 class App extends Component {
   componentDidMount() {
@@ -19,7 +20,9 @@ class App extends Component {
             <Link to='/'>Todos ({this.props.todos.length})</Link>
           </h1>
           <Link to='/todos/create'>Create A New Todo</Link>
+          <Route path='/' component={Error}/>
           <Switch>
+            <Route path='/users/:id' component={Todos} />
             <Route exact path='/' component={Todos} />
             <Route path='/todos/create' component={CreateTodo} />
             <Route path='/todos/:id' component={EditTodo} />

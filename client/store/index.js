@@ -4,9 +4,17 @@ import thunk from 'redux-thunk';
 import todosReducer from './todos';
 import users from './users';
 
+const errorReducer = (state = '', action) => {
+  if(action.type === 'ERROR'){
+    return action.message;
+  }
+  return '';
+}
+
 const rootReducer = combineReducers({
   todos: todosReducer,
-  users
+  users,
+  errorMessage: errorReducer
 });
 
 export default createStore(
